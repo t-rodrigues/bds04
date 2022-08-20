@@ -16,31 +16,31 @@ import org.springframework.util.MultiValueMap;
 @Component
 public class TokenUtil {
 
-	@Value("${security.oauth2.client.client-id}")
-	private String clientId;
+    @Value("${security.oauth2.client.client-id}")
+    private String clientId;
 
-	@Value("${security.oauth2.client.client-secret}")
-	private String clientSecret;
-	
-	public String obtainAccessToken(MockMvc mockMvc, String username, String password) throws Exception {
+    @Value("${security.oauth2.client.client-secret}")
+    private String clientSecret;
 
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("grant_type", "password");
-		params.add("client_id", clientId);
-		params.add("username", username);
-		params.add("password", password);
+    public String obtainAccessToken(MockMvc mockMvc, String username, String password) throws Exception {
 
-		ResultActions result = mockMvc
-				.perform(post("/oauth/token")
-						.params(params)
-						.with(httpBasic(clientId, clientSecret))
-						.accept("application/json;charset=UTF-8"))
-						.andExpect(status().isOk())
-						.andExpect(content().contentType("application/json;charset=UTF-8"));
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "password");
+        params.add("client_id", clientId);
+        params.add("username", username);
+        params.add("password", password);
 
-		String resultString = result.andReturn().getResponse().getContentAsString();
+        ResultActions result = mockMvc
+                .perform(post("/oauth/token")
+                        .params(params)
+                        .with(httpBasic(clientId, clientSecret))
+                        .accept("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
 
-		JacksonJsonParser jsonParser = new JacksonJsonParser();
-		return jsonParser.parseMap(resultString).get("access_token").toString();
-	}
+        String resultString = result.andReturn().getResponse().getContentAsString();
+
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        return jsonParser.parseMap(resultString).get("access_token").toString();
+    }
 }
