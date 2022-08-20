@@ -1,6 +1,9 @@
 package com.devsuperior.bds04.api.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,12 @@ public class EventController {
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<EventDTO>> getEvents(Pageable pageable) {
+        var events = eventService.findAll(pageable);
+        return ResponseEntity.ok(events);
     }
 
     @PutMapping("/{eventId}")

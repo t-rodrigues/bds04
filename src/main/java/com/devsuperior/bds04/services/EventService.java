@@ -1,6 +1,9 @@
 package com.devsuperior.bds04.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.bds04.dto.EventDTO;
 import com.devsuperior.bds04.exceptions.ObjectNotFoundException;
@@ -18,6 +21,12 @@ public class EventService {
         this.cityRepository = cityRepository;
     }
 
+    @Transactional(readOnly = true)
+    public Page<EventDTO> findAll(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(EventDTO::new);
+    }
+
+    @Transactional
     public EventDTO update(Long eventId, EventDTO eventDTO) {
         var event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException("Event not found: " + eventId));

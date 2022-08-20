@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String[] PUBLIC = { "/oauth/token" };
-    private static final String[] GET_PUBLIC = { "/cities/**" };
+    private static final String[] GET_PUBLIC = { "/cities/**", "/events/**" };
     private static final String[] CLIENT_OR_ADMIN = { "/events/**" };
 
     private final JwtTokenStore jwtTokenStore;
