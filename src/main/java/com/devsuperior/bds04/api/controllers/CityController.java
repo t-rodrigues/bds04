@@ -2,6 +2,8 @@ package com.devsuperior.bds04.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +35,7 @@ public class CityController {
     }
 
     @PostMapping
-    public ResponseEntity<CityDTO> createCity(@RequestBody CityDTO cityDTO) {
+    public ResponseEntity<CityDTO> createCity(@RequestBody @Valid CityDTO cityDTO) {
         var city = cityService.create(cityDTO);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cityId}").buildAndExpand(city.getId()).toUri();
 
